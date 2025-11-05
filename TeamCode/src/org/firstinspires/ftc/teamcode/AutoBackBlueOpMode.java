@@ -29,9 +29,14 @@ public class AutoBackBlueOpMode extends OpMode {
 
     private Follower follower;
     private PathChain pathStartToScoringPosition;
+    private PathChain pathToGatherRow1;
 
     private final Pose startPose = new Pose(0,0, Math.toRadians(0));
-    private final Pose scorePose = new Pose(64, 0, Math.toRadians(35));
+    private final Pose scorePose = new Pose( 64, 0, Math.toRadians(35));
+
+    private final Pose row1Intermediate = new Pose(28, 0, Math.toRadians(90));
+
+    private final Pose row1End = new Pose(28, 32, Math.toRadians(90));
 
     private Telemetry telemetryA;
 
@@ -40,6 +45,17 @@ public class AutoBackBlueOpMode extends OpMode {
                 .addPath(new BezierLine(new Point(startPose), new Point(scorePose)))
                 .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
                 .build();
+
+        pathToGatherRow1 = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(scorePose), new Point(row1Intermediate)))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), row1Intermediate.getHeading())
+                .addPath(new BezierLine(new Point(row1Intermediate), new Point(row1End)))
+                .addPath(new BezierLine(new Point(row1End), new Point(row1Intermediate)))
+                .setLinearHeadingInterpolation(row1End.getHeading(), row1Intermediate.getHeading())
+                .addPath(new BezierLine(new Point(row1Intermediate), new Point(scorePose)))
+                .setLinearHeadingInterpolation(row1Intermediate.getHeading(), scorePose.getHeading())
+                .build();
+
     }
 
     @Override
@@ -68,10 +84,12 @@ public class AutoBackBlueOpMode extends OpMode {
             case SCORE_PRELOAD:
                 telemetry.addData("Action", "Pew Pew Pew");
                 telemetry.update();
-                if (getRuntime() > 1) {
-                    gamepad1.rumbleBlips(3);
-                    pathState = PathState.END;
-                }
+
+                pathState = PathState.GATHER_PPG;
+                follower.followPath(pathToGatherRow1);
+                break;
+            case GATHER_PPG:
+                follower.telemetryDebug(telemetryA);
                 break;
         }
     }

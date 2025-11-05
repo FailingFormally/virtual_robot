@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 /**
  * Controls a Mecanum drive with four motors and wheels with 45 degree bearings.
  * This allows driving in any direction.
@@ -15,7 +17,7 @@ public class MecanumDrive {
     private DcMotor backLeftMotor;
     private DcMotor backRightMotor;
 
-//    private final Telemetry telemetry;
+    private Telemetry telemetry;
 
     /**
      * @param telemetry - Pass the telemetry instance from the OpMode to get telemetry output.
@@ -30,7 +32,9 @@ public class MecanumDrive {
      *
      * @param hardwareMap - The hardware configuration information
      */
-    public void init(HardwareMap hardwareMap) {
+    public void init(HardwareMap hardwareMap, Telemetry telemetry) {
+        this.telemetry = telemetry;
+
         frontLeftMotor = hardwareMap.dcMotor.get("front_left_motor");
         frontRightMotor = hardwareMap.dcMotor.get("front_right_motor");
         backLeftMotor = hardwareMap.dcMotor.get("back_left_motor");
@@ -89,10 +93,10 @@ public class MecanumDrive {
         backLeftMotor.setPower(backLeftPower);
         backRightMotor.setPower(backRightPower);
 
-//        telemetry.addData("Front Left Motor Power", frontLeftPower);
-//        telemetry.addData("Back Left Motor Power", backLeftPower);
-//        telemetry.addData("Front Right Motor Power", frontRightPower);
-//        telemetry.addData("Back Right Motor Power", backRightPower);
+        telemetry.addData("Front Left Motor Power", frontLeftPower);
+        telemetry.addData("Back Left Motor Power", backLeftPower);
+        telemetry.addData("Front Right Motor Power", frontRightPower);
+        telemetry.addData("Back Right Motor Power", backRightPower);
     }
 
     /**

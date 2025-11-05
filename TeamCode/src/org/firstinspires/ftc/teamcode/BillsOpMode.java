@@ -14,7 +14,7 @@ public class BillsOpMode extends OpMode {
 
     @Override
     public void init() {
-        drive.init(hardwareMap);
+        drive.init(hardwareMap, this.telemetry);
     }
 
     @Override

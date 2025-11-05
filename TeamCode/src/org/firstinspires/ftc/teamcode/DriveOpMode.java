@@ -12,7 +12,7 @@ public class DriveOpMode extends OpMode {
 
     @Override
     public void init() {
-        drive.init(hardwareMap);
+        drive.init(hardwareMap, this.telemetry);
     }
 
     @Override
@@ -22,6 +22,7 @@ public class DriveOpMode extends OpMode {
         double rotate = gamepad1.right_stick_x;
 
         drive.drive(forward, right, rotate);
+        telemetry.update();
 
     }
 }
