@@ -105,10 +105,10 @@ public class RobotAutoDriveByEncoder_Linear extends LinearOpMode {
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        front_left_Motor.setDirection(DcMotor.Direction.REVERSE);
-        front_right_Motor.setDirection(DcMotor.Direction.FORWARD);
-        back_left_Motor.setDirection(DcMotorSimple.Direction.REVERSE);
-        back_right_Motor.setDirection(DcMotorSimple.Direction.FORWARD);
+        front_left_Motor.setDirection(DcMotor.Direction.FORWARD);
+        front_right_Motor.setDirection(DcMotor.Direction.REVERSE);
+        back_left_Motor.setDirection(DcMotorSimple.Direction.FORWARD);
+        back_right_Motor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         front_left_Motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         front_right_Motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -183,14 +183,14 @@ public class RobotAutoDriveByEncoder_Linear extends LinearOpMode {
         telemetry.addData("Running", "Red Long Auto");
         telemetry.update();
         encoderDrive(DRIVE_SPEED,  183,  183, 5.0);
-        encoderDrive(TURN_SPEED,   20,-20 , 4.0);
+        encoderDrive(TURN_SPEED,   -12,-12 , 4.0);
     }
     private void runBlueLongAuto()
     {
         telemetry.addData("Running", "Blue Long Auto");
         telemetry.update();
-        encoderDrive(DRIVE_SPEED,  183,  183, 5.0);
-        encoderDrive(TURN_SPEED,   -20,20 , 4.0);
+        encoderDrive(DRIVE_SPEED,  91,  91, 5.0);
+        encoderDrive(TURN_SPEED,   12,-12 , 4.0);
     }
 
     private void runBlueShortAuto() {
