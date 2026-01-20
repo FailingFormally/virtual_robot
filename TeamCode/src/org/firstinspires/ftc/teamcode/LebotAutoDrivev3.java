@@ -238,17 +238,28 @@ public class LebotAutoDrivev3 extends LinearOpMode {
 
         telemetry.addData("Running", "Red Short Auto");
         telemetry.update();
+        // Drive forward
         encoderDrive(DRIVE_SPEED, -SHORT_DISTANCE, -SHORT_DISTANCE, 30.0);
         launch();
-        encoderDrive(TURN_SPEED, -75, 75, 10);
-        encoderDrive(DRIVE_SPEED, 48, 48, 10);
-        encoderDrive(TURN_SPEED, -53, 53, 10);
-        encoderDrive(DRIVE_SPEED, -43,-43,10);
-        encoderDrive(DRIVE_SPEED, 43, 43, 10);
-        encoderDrive(TURN_SPEED, 48, -57, 10);
-        encoderDrive(DRIVE_SPEED, -50, -50,10);
-        encoderDrive(DRIVE_SPEED, 75, -75, 10);
-
+        //drive backwards
+        encoderDrive(DRIVE_SPEED, -15, -15, 5);
+        // Turn counter clockwise
+        encoderDrive(TURN_SPEED, 25, -25, 5);
+        //Drive down to artifacts
+        encoderDrive(DRIVE_SPEED, -43, -43, 5);
+        //turn towards artifacts
+        encoderDrive(TURN_SPEED, 55, -55, 5);
+        //collect artifacts
+        encoderDrive(DRIVE_SPEED, -52,-52,5);
+        encoderDrive(DRIVE_SPEED, 52, 52, 5);
+        //turn up
+        encoderDrive(TURN_SPEED, -48, 48, 5);
+        //drive up
+        encoderDrive(DRIVE_SPEED, 35, 35,5);
+        //turn towards goal
+        encoderDrive(TURN_SPEED, -28, 28, 5);
+        //drive to goal
+        encoderDrive(DRIVE_SPEED, 15, 15, 30);
 
         launch();
     }
