@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.digitalchickenlabs.OctoQuad;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -11,10 +10,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 /**
@@ -51,10 +47,10 @@ public class MecanumAuto extends LinearOpMode {
     static final double     P_TURN_GAIN            = 0.1;     // Larger is more responsive, but also less stable.
     static final double     P_DRIVE_GAIN           = 0.03;     // Larger is more responsive, but also less stable.
 
-    DcMotor m1;
-    DcMotor m2;
-    DcMotor m3;
-    DcMotor m4;
+    DcMotor backLeftMotor;
+    DcMotor frontLeftMotor;
+    DcMotor frontRightMotor;
+    DcMotor backRightMotor;
     DistanceSensor frontDistance;
     DistanceSensor leftDistance;
     DistanceSensor rightDistance;
@@ -66,13 +62,13 @@ public class MecanumAuto extends LinearOpMode {
 
     public void initialize() {
         // Motors
-        m1 = hardwareMap.dcMotor.get("back_left_motor");
-        m2 = hardwareMap.dcMotor.get("front_left_motor");
-        m3 = hardwareMap.dcMotor.get("front_right_motor");
-        m4 = hardwareMap.dcMotor.get("back_right_motor");
+        backLeftMotor = hardwareMap.dcMotor.get("back_left_motor");
+        frontLeftMotor = hardwareMap.dcMotor.get("front_left_motor");
+        frontRightMotor = hardwareMap.dcMotor.get("front_right_motor");
+        backRightMotor = hardwareMap.dcMotor.get("back_right_motor");
 
-        m1.setDirection(DcMotor.Direction.REVERSE);
-        m2.setDirection(DcMotor.Direction.REVERSE);
+        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
 
         setMotorModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -95,14 +91,14 @@ public class MecanumAuto extends LinearOpMode {
      * @param mode
      */
     private void setMotorModes(DcMotor.RunMode mode) {
-        m1.setMode(mode);
-        m2.setMode(mode);
-        m3.setMode(mode);
-        m4.setMode(mode);
+        backLeftMotor.setMode(mode);
+        frontLeftMotor.setMode(mode);
+        frontRightMotor.setMode(mode);
+        backRightMotor.setMode(mode);
     }
 
     private boolean motorsAreBusy() {
-        return m1.isBusy() && m2.isBusy() && m3.isBusy() && m4.isBusy();
+        return backLeftMotor.isBusy() && frontLeftMotor.isBusy() && frontRightMotor.isBusy() && backRightMotor.isBusy();
     }
 
     public void runOpMode(){
@@ -143,10 +139,10 @@ public class MecanumAuto extends LinearOpMode {
             int moveCounts = (int)(distance * COUNTS_PER_INCH);
 
             // Set Target FIRST, then turn on RUN_TO_POSITION
-            m1.setTargetPosition( m1.getCurrentPosition() + moveCounts );
-            m2.setTargetPosition( m2.getCurrentPosition() + moveCounts );
-            m3.setTargetPosition( m3.getCurrentPosition() + moveCounts );
-            m4.setTargetPosition( m4.getCurrentPosition() + moveCounts );
+            backLeftMotor.setTargetPosition( backLeftMotor.getCurrentPosition() + moveCounts );
+            frontLeftMotor.setTargetPosition( frontLeftMotor.getCurrentPosition() + moveCounts );
+            frontRightMotor.setTargetPosition( frontRightMotor.getCurrentPosition() + moveCounts );
+            backRightMotor.setTargetPosition( backRightMotor.getCurrentPosition() + moveCounts );
 
             setMotorModes(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -247,10 +243,10 @@ public class MecanumAuto extends LinearOpMode {
         p2 /= max;
         p3 /= max;
         p4 /= max;
-        m1.setPower(p1);
-        m2.setPower(p2);
-        m3.setPower(p3);
-        m4.setPower(p4);
+        backLeftMotor.setPower(p1);
+        frontLeftMotor.setPower(p2);
+        frontRightMotor.setPower(p3);
+        backRightMotor.setPower(p4);
         telemetry.addData("Color","R %d  G %d  B %d", colorSensor.red(), colorSensor.green(), colorSensor.blue());
         telemetry.addData("Heading", " %.1f", getHeading());
         telemetry.addData("Heading Error", " %.1f", getHeadingError(90));
@@ -259,8 +255,8 @@ public class MecanumAuto extends LinearOpMode {
         telemetry.addData("Left Distance", " %.1f", leftDistance.getDistance(DistanceUnit.INCH));
         telemetry.addData("Right Distance", " %.1f", rightDistance.getDistance(DistanceUnit.INCH));
         telemetry.addData("Back Distance", " %.1f", backDistance.getDistance(DistanceUnit.INCH));
-        telemetry.addData("Encoders"," %d %d %d %d", m1.getCurrentPosition(), m2.getCurrentPosition(),
-                m3.getCurrentPosition(), m4.getCurrentPosition());
+        telemetry.addData("Encoders"," %d %d %d %d", backLeftMotor.getCurrentPosition(), frontLeftMotor.getCurrentPosition(),
+                frontRightMotor.getCurrentPosition(), backRightMotor.getCurrentPosition());
         telemetry.addData("Octoquad", "%d %d %d %d", octoQuad.readSinglePosition(0),
                 octoQuad.readSinglePosition(1), octoQuad.readSinglePosition(2),
                 octoQuad.readSinglePosition(3));
@@ -268,10 +264,10 @@ public class MecanumAuto extends LinearOpMode {
     }
 
     protected void stopMotors() {
-        m1.setPower(0);
-        m2.setPower(0);
-        m3.setPower(0);
-        m4.setPower(0);
+        backLeftMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        backRightMotor.setPower(0);
     }
 
     public double getHeading() {
