@@ -61,6 +61,10 @@ public abstract class MecanumAutoLinearOpMode extends LinearOpMode {
 
     public abstract void runRoutine();
 
+    /**
+     * This method is used to initialize the robot.
+     * Override this method (and call super() ) to add initialization.
+     */
     public void initialize() {
         // Motors
         backLeftMotor = hardwareMap.dcMotor.get("back_left_motor");
@@ -102,11 +106,21 @@ public abstract class MecanumAutoLinearOpMode extends LinearOpMode {
         return backLeftMotor.isBusy() && frontLeftMotor.isBusy() && frontRightMotor.isBusy() && backRightMotor.isBusy();
     }
 
+    /**
+     * This loop runs until start is pressed.
+     * Override this method to add your own initialization menu and logic.
+     */
+    public void onInitLoop() {
+    }
+
     public void runOpMode(){
         initialize();
-        
-        telemetry.addData("Press Start When Ready","");
-        telemetry.update();
+
+        // This loop runs during the INIT phase
+        while (!isStarted() && !isStopRequested()) {
+            onInitLoop();
+            sleep(50); // Add a small delay to avoid excessive polling
+        }
 
         waitForStart();
 
