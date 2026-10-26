@@ -14,6 +14,8 @@ import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.pedropathing.tuning.Constants;
+
 @Autonomous(name = "AutoPath", group = "Autonomous")
 public class AutoPath extends LinearOpMode {
 
